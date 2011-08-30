@@ -15,11 +15,14 @@ class ProductsControllerTest < ActionController::TestCase
     get :index
     assert_response :success
     assert_not_nil assigns(:products)
+    assert_select 'h1', 'Listing products'
+    assert_select '#product_list .list_line_odd', :minimum =>2
   end
 
   test "should get new" do
     get :new
     assert_response :success
+    assert_select '#store h1', 'New product'
   end
 
   test "should create product" do
@@ -38,6 +41,7 @@ class ProductsControllerTest < ActionController::TestCase
   test "should get edit" do
     get :edit, :id => @product.to_param
     assert_response :success
+    assert_select '#main h1', 'Editing product'
   end
 
   test "should update product" do
