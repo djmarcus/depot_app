@@ -42,12 +42,11 @@ class LineItemsController < ApplicationController
   def create
     @cart = current_cart
     product = Product.find(params[:product_id])
-    @line_item = @cart.line_items.build(:product => product)
+    @line_item = @cart.add_product(product.id)
 
     respond_to do |format|
       if @line_item.save
-        format.html { redirect_to(@line_item.cart,
-          :notice => 'Line item was successfully created.') }
+        format.html { redirect_to(@line_item.cart) }
         format.xml  { render :xml => @line_item, 
           :status => :created, :location => @line_item }
         session[:counter] = 0
@@ -80,9 +79,21 @@ class LineItemsController < ApplicationController
     @line_item = LineItem.find(params[:id])
     @line_item.destroy
 
-    respond_to do |format|
-      format.html { redirect_to(line_items_url) }
-      format.xml  { head :ok }
+    cart_quantity = LineItem.where(:cart_id => current_cart)
+
+    if cart_quantity.empty?
+      current_cart.destroy
+      respond_to do |format|
+        format.html { redirect_to(store_url,
+          :notice => 'Your cart is currently empty') }
+        format.xml  { head :ok }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to( current_cart, 
+          :notice => 'Item removed from cart') }
+        format.xml  { head :ok }
+      end
     end
   end
 end

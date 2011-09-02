@@ -1,7 +1,3 @@
-<% if notice %>
-<p id="notice"><%= notice %></p>
-<% end %>
-
 <div id="count">
   <% if session[:counter] > 5 %>
     <p>You have visited the catalog <%= session[:counter] %> <%= "time".pluralize %></p>

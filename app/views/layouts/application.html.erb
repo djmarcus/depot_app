@@ -27,6 +27,10 @@
       <a href="http://www..../contact">Contact</a><br />
     </div>
     <div id="main">
+      <% if notice %>
+        <p id="notice"><%= notice %></p>
+      <% end %>
+
       <%= yield %><!-- <label id="code.depot.e.include"/> -->
     </div>
   </div>
